@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Тест: подлежащее и сказуемое</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#efe9e2;font-family:'Nunito','Segoe UI',system-ui,sans-serif;color:#4a3b34;padding:20px 12px;line-height:1.4}
+.page{max-width:1080px;margin:0 auto;background:#fdfbf7;border-radius:26px;padding:28px 28px 22px;position:relative;box-shadow:0 8px 30px rgba(90,70,60,.12);overflow:hidden}
+.dd{position:absolute;pointer-events:none}
+.head{text-align:center;position:relative;padding:10px 70px 0}
+h1{margin:0;font-size:clamp(28px,5.6vw,56px);letter-spacing:.04em;font-weight:900;color:#4d3d36;line-height:1.08}
+.ribbon{display:inline-block;margin-top:14px;padding:9px 38px;background:#e4d8ef;font-weight:600;font-size:15px;clip-path:polygon(0 0,100% 0,97% 50%,100% 100%,0 100%,3% 50%)}
+.top{display:grid;grid-template-columns:1fr 1.25fr;gap:22px;margin:26px 0 22px}
+.datebox{background:#e5e9da;border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.goal{background:#fbe3e5;border:1px solid #d9bfc0;border-radius:18px;padding:16px 20px 18px;position:relative}
+.fl{display:flex;gap:10px;align-items:baseline;font-weight:600}
+.fl input,.fld input{font:inherit;border:none;border-bottom:1.5px dashed #9a8b83;background:transparent;color:inherit;outline:none;padding:3px 4px;flex:1;min-width:0}
+.tape{position:absolute;width:76px;height:24px;opacity:.92;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.55) 0 5px,transparent 5px 10px);clip-path:polygon(0 0,100% 0,96% 25%,100% 50%,96% 75%,100% 100%,0 100%,4% 75%,0 50%,4% 25%)}
+.tp{background-color:#f4b9c7}.tu{background-color:#cdbbe6}.tg{background-color:#bfd8a6}.ty{background-color:#f7d98b}.tb{background-color:#b7d6dc}
+.main{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
+.table{border:1.5px solid #a89a92;border-radius:12px;overflow:hidden;background:#fffdfa}
+.thead{display:grid;grid-template-columns:64px 1fr;font-weight:800;font-size:13px;letter-spacing:.08em;text-align:center}
+.thead div{padding:11px 6px}.th1{background:#d6e7ea}.th2{background:#fbe8cb}
+.band{padding:9px 18px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:13px;border-top:1px solid #a89a92}
+.band.purple{background:#ece3f4}.band.green{background:#e3ebd6}.band.yellow{background:#fbefd0}
+.row{display:grid;grid-template-columns:64px 1fr;border-top:1px solid #c9bcb4}
+.num{display:flex;justify-content:center;padding:14px 0;border-right:1px solid #a89a92}
+.num span{width:40px;height:34px;border-radius:8px;background:#e8eeef;border:1px solid #b9c4c6;display:flex;align-items:center;justify-content:center;font-weight:800}
+.body{padding:14px 18px 16px;min-width:0}
+.skill{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9a8b83}
+.q{font-weight:800;font-size:16px;margin:2px 0 8px}
+.stmt{background:#fff;border:1px solid #e3d8d0;border-left:4px solid #cdbbe6;border-radius:10px;padding:10px 14px;font-size:17px;margin-bottom:8px}
+.t{border-bottom:2.5px solid #e08a9c;font-weight:800}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;cursor:pointer;border:1.5px solid transparent}
+.opt:hover{background:#faf3ee}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .box{width:19px;height:19px;border:1.5px solid #8b7b73;border-radius:5px;background:#fff;flex:none;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#4a3b34}
+.opt input:checked+.box{background:#e4d8ef}
+.opt input:checked+.box::after{content:'✓'}
+.opt.good{background:#e3efd6;border-color:#a9c98d}.opt.bad{background:#fbe0e0;border-color:#e3a7a7}.opt.miss{border:1.5px dashed #8fb872}
+.mrow{display:grid;grid-template-columns:1fr 250px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px dashed #d4c8c0}
+.mrow:last-child{border-bottom:none}
+.ms{font-size:16px}
+select{font:inherit;padding:8px 10px;border-radius:10px;border:1.5px solid #b8a99f;background:#fff;color:inherit;max-width:100%}
+select.good{border-color:#7fb15c;background:#eef6e6}select.bad{border-color:#d88e8e;background:#fdeeee}
+.tokens{display:flex;flex-wrap:wrap;gap:2px}
+.tok{font:inherit;font-size:16px;padding:6px 12px;margin:3px;border-radius:999px;border:1.5px solid #c6b8af;background:#fff;cursor:pointer;color:inherit}
+.tok:hover{background:#faf3ee}.tok.on{background:#e4d8ef;border-color:#9a85b3}
+.tok.good{background:#d9ebc8;border-color:#8fb872}.tok.bad{background:#f8d6d6;border-color:#d88e8e}.tok.miss{border:1.5px dashed #8fb872;background:#f2f8ea}
+.fld{display:flex;gap:10px;align-items:baseline;margin:8px 0;font-weight:600}
+.fld input{font-size:17px}.fld input.good{border-bottom-color:#7fb15c;background:#eef6e6}.fld input.bad{border-bottom-color:#d88e8e;background:#fdeeee}
+textarea{width:100%;font:inherit;border:1.5px solid #c6b8af;border-radius:12px;padding:10px 12px;min-height:96px;resize:vertical;background:#fff;color:inherit}
+.fb{margin-top:12px;padding:10px 14px;border-radius:12px;font-size:14.5px}
+.fb.ok{background:#e7f1dc}.fb.part{background:#fdf1d2}.fb.no{background:#fbe5e5}
+.fb .cor{margin-top:4px;font-weight:600}.fb .why{margin-top:4px;color:#6b5a54}
+.card{background:#fffdfa;border:1.5px solid #cdbfb7;border-radius:18px;padding:40px 18px 16px;position:relative;margin-bottom:20px}
+.lab{position:absolute;top:13px;left:22px;padding:4px 24px;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;clip-path:polygon(0 0,100% 0,97% 50%,100% 100%,0 100%,3% 50%)}
+.sage{background:#e1e8d3}.lilac{background:#e4d8ef}.rose{background:#f6dde2}.sky{background:#d6e7ea}.sand{background:#fbe8c5}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1.5px dotted #c9bcb4;font-size:14px;cursor:pointer}
+.ck:last-of-type{border-bottom:none}
+.ck input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid #8b7b73;border-radius:4px;background:#fff;flex:none;margin:2px 0 0;cursor:pointer}
+.ck input:checked{background:#e4d8ef}.ck input:checked::after{content:'✓';display:block;text-align:center;font-size:13px;line-height:15px;font-weight:800}
+.bar{height:10px;border-radius:99px;background:#efe6df;margin-top:12px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:#cdbbe6;transition:width .3s}
+.cnt{font-size:13px;font-weight:600;margin-top:6px;color:#7a6a63}
+.card textarea.notes{min-height:150px;border-style:dashed}
+.bottom{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;margin-top:6px}
+.faces{display:flex;justify-content:space-around;gap:6px;margin-top:4px}
+.faces label{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;font-size:11px;font-weight:600;color:#7a6a63}
+.faces input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid #8b7b73;border-radius:4px;background:#fff;margin:0;cursor:pointer}
+.faces input:checked{background:#f6b8c4}.faces input:checked::after{content:'✓';display:block;text-align:center;font-size:13px;line-height:15px;font-weight:800}
+.proud{border:none;min-height:96px;line-height:32px;padding:0 4px;border-radius:0;background:repeating-linear-gradient(transparent,transparent 31px,#cdbfb7 31px,#cdbfb7 32px)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:26px 0 6px}
+.btn{font:inherit;font-weight:800;padding:13px 26px;border-radius:999px;border:1.5px solid #8b7b73;cursor:pointer;color:#4a3b34;box-shadow:0 3px 0 rgba(139,123,115,.4)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.b1{background:#f6dde2}.b2{background:#dfe8cf}.b3{background:#fffdfa;padding:13px 20px;font-weight:600}
+.result{margin-top:18px;background:#fff;border:1.5px solid #cdbfb7;border-radius:18px;padding:20px 22px}
+.big{font-size:34px;font-weight:900}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{background:#fbe3e5;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:600}
+.foot{display:block;width:max-content;max-width:100%;margin:18px auto 0;padding:8px 40px;background:#f6ece4;border:1px solid #d9ccc3;border-radius:999px;font-size:15px;text-align:center}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(30px);background:#4a3b34;color:#fff;padding:11px 22px;border-radius:999px;font-weight:700;opacity:0;transition:.3s;pointer-events:none;z-index:9}
+.toast.on{opacity:1;transform:translateX(-50%)}
+[hidden]{display:none!important}
+@media(max-width:900px){.main{grid-template-columns:1fr}.top,.bottom{grid-template-columns:1fr}.head{padding:10px 24px 0}.page{padding:20px 14px}}
+@media(max-width:560px){.mrow{grid-template-columns:1fr}.row,.thead{grid-template-columns:48px 1fr}.num span{width:32px}.body{padding:12px 12px 14px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="heart" viewBox="0 0 24 24"><path d="M12 21S4 16 2.5 10.5C1.6 7 4 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3 0 5.400 2.500 4.500 6C20 16 12 21 12 21Z" fill="#f6b8c4" stroke="#6b4a52" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 2.5l2.8 6 6.5.8-4.8 4.5 1.3 6.5L12 17l-5.8 3.3 1.3-6.5L2.7 9.3l6.5-.8z" fill="#cdbbe6" stroke="#6b5a80" stroke-width="1.3" stroke-linejoin="round"/><circle cx="9.6" cy="11.2" r=".9" fill="#4a3b34"/><circle cx="14.4" cy="11.2" r=".9" fill="#4a3b34"/><path d="M10.4 13.4q1.6 1.4 3.2 0" fill="none" stroke="#4a3b34" stroke-width="1"/></symbol>
+<symbol id="sp" viewBox="0 0 24 24"><path d="M12 2c.8 5 2.5 8.2 10 10-7.5 1.8-9.2 5-10 10-.8-5-2.5-8.2-10-10 7.5-1.8 9.2-5 10-10Z" fill="#fbe6a8" stroke="#8a7440" stroke-width="1.2" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<div class="page">
+  <svg class="dd" style="left:46px;top:30px;width:46px;height:46px"><use href="#heart"/></svg>
+  <svg class="dd" style="left:100px;top:22px;width:18px;height:18px"><use href="#sp"/></svg>
+  <svg class="dd" style="right:62px;top:20px;width:48px;height:48px"><use href="#star"/></svg>
+  <svg class="dd" style="right:118px;top:62px;width:20px;height:20px"><use href="#sp"/></svg>
+
+  <header class="head">
+    <h1>ПОДЛЕЖАЩЕЕ И СКАЗУЕМОЕ</h1>
+    <div class="ribbon">Проверь, как ты понимаешь тему, а не только помнишь правила ♡</div>
+  </header>
+
+  <div class="top">
+    <div class="datebox">
+      <label class="fl">Имя: <input id="name" type="text" autocomplete="off"></label>
+      <label class="fl">Дата: <input id="date" type="date"></label>
+    </div>
+    <div class="goal">
+      <span class="tape tp" style="right:-12px;top:-6px;transform:rotate(24deg)"></span>
+      <label class="fl">Цель теста: <input id="goal" type="text" placeholder="например: понять, когда инфинитив не в сказуемом" autocomplete="off"></label>
+      <svg class="dd" style="right:10px;bottom:-4px;width:26px;height:26px"><use href="#heart"/></svg>
+    </div>
+  </div>
+
+  <div class="main">
+    <div>
+      <div class="table">
+        <div class="thead"><div class="th1">№</div><div class="th2">ЗАДАНИЯ</div></div>
+        <div id="tasks"></div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <span class="lab sage">Важные дела</span>
+        <svg class="dd" style="right:14px;top:8px;width:30px;height:30px"><use href="#star"/></svg>
+        <label class="ck"><input type="checkbox" id="p1" disabled><span>Подлежащее: ответила на все задания</span></label>
+        <label class="ck"><input type="checkbox" id="p2" disabled><span>Сказуемое: ответила на все задания</span></label>
+        <label class="ck"><input type="checkbox" id="p3" disabled><span>Объяснила своими словами</span></label>
+        <label class="ck"><input type="checkbox" id="p4" disabled><span>Нажала «Проверить ответы»</span></label>
+        <label class="ck"><input type="checkbox" id="p5"><span>Разобрала свои ошибки</span></label>
+        <div class="bar"><i id="fill"></i></div>
+        <div class="cnt" id="cnt"></div>
+      </div>
+
+      <div class="card nb">
+        <span class="lab lilac">Не забыть</span>
+        <svg class="dd" style="right:14px;top:10px;width:26px;height:26px"><use href="#heart"/></svg>
+        <label class="ck"><input type="checkbox"><span>Подлежащее стоит в именительном падеже и бывает не только существительным.</span></label>
+        <label class="ck"><input type="checkbox"><span>Подлежащее может быть словосочетанием: ищи его целиком.</span></label>
+        <label class="ck"><input type="checkbox"><span>Простое сказуемое — одно «целое»: глагол, фразеологизм, междометие…</span></label>
+        <label class="ck"><input type="checkbox"><span>Инфинитив не в сказуемом, если: разные лица · глагол движения · вопрос «какой?»</span></label>
+      </div>
+
+      <div class="card">
+        <span class="lab rose">Заметки</span>
+        <svg class="dd" style="right:14px;top:6px;width:26px;height:26px" viewBox="0 0 24 24"><path d="M8 7v9a4 4 0 008 0V6a2.5 2.5 0 00-5 0v9.500a1 1 0 002 0V8" fill="none" stroke="#6b5a80" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <textarea class="notes" id="notes" placeholder="Черновик, вопросы к репетитору…"></textarea>
+      </div>
+    </aside>
+  </div>
+
+  <div class="bottom">
+    <div class="card" style="margin-bottom:0">
+      <span class="lab sand">Моё настроение</span>
+      <svg class="dd" style="right:14px;top:8px;width:24px;height:24px"><use href="#heart"/></svg>
+      <div class="faces" id="faces"></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <span class="lab sky">Я горжусь собой за:</span>
+      <textarea class="proud" id="proud" rows="3"></textarea>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn b1" id="bCheck" type="button">Проверить ответы</button>
+    <button class="btn b2" id="bCopy" type="button">Скопировать ответы</button>
+    <button class="btn b3" id="bReset" type="button">Начать заново</button>
+  </div>
+
+  <div class="result" id="result" hidden></div>
+
+  <span class="foot">Делай каждый день лучше! ♡</span>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const strip=h=>String(h).replace(/<[^>]+>/g,'');
+const norm=s=>String(s).toLowerCase().replace(/ё/g,'е').replace(/[^а-яa-z0-9\s-]/g,' ').replace(/\s+/g,' ').trim();
+
+const SECTIONS=[
+ {n:'Подлежащее: чем оно выражено',c:'purple'},
+ {n:'Сказуемое: простое или составное',c:'green'},
+ {n:'Объясни своими словами',c:'yellow'}
+];
+const OPT_S=['существительным в Им. п.','местоимением в Им. п.','прилагательным (в роли существительного)','инфинитивом','числительным','служебной частью речи','междометием','наречием'];
+
+const TASKS=[
+/* ---------- ПОДЛЕЖАЩЕЕ ---------- */
+{sec:0,type:'choice',skill:'Подлежащее — одно слово',title:'Слово «опоздавшие» — причастие. Почему в этом предложении оно подлежащее, а не определение?',
+ q:'<span class="t">Опоздавшие</span> тихо прошли на свои места.',
+ opts:['Потому что оно стоит в начале предложения','Потому что к нему нет определяемого существительного: оно само называет лиц (кто? — опоздавшие) и стоит в Им. п.','Потому что любое причастие всегда бывает подлежащим','Потому что оно оканчивается на -ие'],ans:1,
+ why:'Определение всегда относится к существительному. Здесь такого слова нет: причастие «опоздавшие» само называет людей и отвечает на вопрос «кто?», то есть выполняет роль существительного. Порядок слов и окончание ничего не доказывают.'},
+
+{sec:0,type:'match',skill:'Подлежащее — одно слово',title:'Чем выражено выделенное подлежащее? Выбери для каждого предложения. (Один вариант в списке лишний.)',
+ opts:OPT_S,
+ rows:[
+  {s:'<span class="t">Курить</span> вредно.',a:3},
+  {s:'<span class="t">Больные</span> уже спали.',a:2},
+  {s:'<span class="t">Пятеро</span> остались до конца.',a:4},
+  {s:'<span class="t">Мы</span> договорились встретиться в семь.',a:1},
+  {s:'<span class="t">Не</span> пишется с глаголами раздельно.',a:5},
+  {s:'Из соседней комнаты раздалось громкое <span class="t">ах</span>.',a:6},
+  {s:'<span class="t">Завтра</span> — наш последний шанс.',a:7}],
+ why:'«Больные» — прилагательное в роли существительного; «пятеро» — числительное; «не» — частица (служебная часть речи), о которой говорят как о слове; «ах» — междометие. Лишним остаётся «существительное»: все подлежащие здесь выражены другими частями речи.'},
+
+{sec:0,type:'tap',skill:'Подлежащее — словосочетание',title:'Найди подлежащее. Нажимай на все слова, которые в него входят.',
+ tokens:['Один','из','участников','задал','неожиданный','вопрос'],ans:[0,1,2],
+ why:'«Один из участников» — числительное + ИЗ + существительное в Р. п.: это одно подлежащее-словосочетание. «Вопрос» — не подлежащее: оно отвечает на вопрос «что?» и зависит от глагола «задал».'},
+
+{sec:0,type:'tap',skill:'Подлежащее — словосочетание',title:'Найди подлежащее. Нажимай на все слова, которые в него входят.',
+ tokens:['Красное','море','омывает','берега','нескольких','стран'],ans:[0,1],
+ why:'«Красное море» — географическое название, его нельзя разделять. Слово «берега» — дополнение (омывает — что?), а «стран» — зависимое слово, оно не входит в подлежащее.'},
+
+{sec:0,type:'choice',skill:'Подлежащее — словосочетание',title:'Ученица сказала: «Подлежащее — слово школьников, ведь ждут именно они». Что в этом рассуждении неверно?',
+ q:'Группа школьников ждала автобус на остановке.',
+ opts:['Ничего: ждут школьники, значит, подлежащее — «школьников»','Подлежащее — «группа школьников»: «школьников» стоит в Р. п., а сказуемое «ждала» согласуется со словом «группа» (ж. р., ед. ч.)','Подлежащее — «автобус»','Подлежащее — «остановке»'],ans:1,
+ why:'Подлежащее не может стоять в Р. п. по отдельности. Подсказка — согласование: сказуемое «ждала» в ж. р. и ед. ч. подходит к слову «группа», а не к слову «школьников» (мн. ч.). Собирательное существительное + существительное в Р. п. — одно подлежащее.'},
+
+{sec:0,type:'choice',skill:'Подлежащее — словосочетание',title:'Ученица записала в грамматическую основу только слово «лето». Согласна ли ты?',
+ q:'Бабье лето в этом году затянулось.',
+ opts:['Согласна: подлежащее — «лето», а слово «бабье» в подлежащее не входит','Не согласна: «бабье лето» — устойчивое неделимое сочетание, подлежащее — оба слова','Не согласна: подлежащее — «год»','Не согласна: в предложении нет подлежащего'],ans:1,
+ why:'«Бабье лето» называет одно понятие (тёплые дни в начале осени). Если убрать слово «бабье», смысл изменится, поэтому сочетание неделимо и является подлежащим целиком.'},
+
+{sec:0,type:'match',skill:'Слово или словосочетание',title:'Подлежащее в предложении — одно слово или словосочетание?',
+ opts:['одно слово','словосочетание'],
+ rows:[
+  {s:'Мама с дочкой вышли из магазина.',a:1},
+  {s:'Приезжие осматривали город.',a:0},
+  {s:'Кто-нибудь из вас видел этот фильм?',a:1},
+  {s:'Конец ноября выдался слякотным.',a:1},
+  {s:'Они вернулись затемно.',a:0},
+  {s:'Двое вышли из зала раньше всех.',a:0}],
+ why:'Словосочетания: «мама с дочкой» (сущ. + С + сущ. в Т. п., сказуемое во мн. ч.), «кто-нибудь из вас» (неопределённое местоимение + ИЗ + слово в Р. п.), «конец ноября» (слово со значением фазы + существительное). Остальные подлежащие — одно слово: «приезжие», «они», «двое».'},
+
+/* ---------- СКАЗУЕМОЕ ---------- */
+{sec:1,type:'match',skill:'Вид сказуемого',title:'Определи вид сказуемого. Помни: количество слов не решает, важно строение.',
+ opts:['простое глагольное','составное глагольное'],
+ rows:[
+  {s:'Мы собираемся пойти в музей в субботу.',a:1},
+  {s:'Малыш чуть не упал с горки.',a:0},
+  {s:'Нам надо успеть на последний автобус.',a:1},
+  {s:'Мы будем встречать гостей на вокзале.',a:0},
+  {s:'Кот шмыг под диван.',a:0},
+  {s:'Учитель продолжил объяснять тему.',a:1}],
+ why:'Составное — когда есть вспомогательная часть + инфинитив (собираемся пойти, надо успеть, продолжил объяснять). Простое — «чуть не упал» (глагол + частица), «будем встречать» (сложная форма будущего), «шмыг» (глагольное междометие), хотя слов в сказуемом может быть несколько.'},
+
+{sec:1,type:'choice',skill:'Простое глагольное сказуемое',title:'Ученица утверждает: «Сказуемое «пусть выберут» — составное, ведь в нём два слова». Что неверно в её рассуждении?',
+ q:'Пусть дети сами выберут себе книги.',
+ opts:['Ничего: два слова — значит, составное','Составное сказуемое обязательно содержит инфинитив; «пусть» — частица, поэтому сказуемое простое','Сказуемое здесь — «сами выберут»','«Пусть» — вспомогательный глагол'],ans:1,
+ why:'Вид сказуемого определяет строение, а не число слов. В составном сказуемом всегда есть инфинитив. «Пусть» — модальная частица, она вместе с глаголом «выберут» образует простое сказуемое.'},
+
+{sec:1,type:'choice',skill:'Простое глагольное сказуемое',title:'Ученица рассуждает: «Начнём — фазовый глагол, значит, сказуемое составное». Верно ли это?',
+ q:'Завтра мы начнём ремонт.',
+ opts:['Да: «начнём» всегда образует составное сказуемое','Нет: после «начнём» стоит существительное «ремонт», а не инфинитив, поэтому сказуемое простое','Нет: «начнём» — это подлежащее','Да: потому что есть слова «мы» и «начнём»'],ans:1,
+ why:'Глагол со значением начала действия даёт составное сказуемое только вместе с инфинитивом (начнём ремонтировать). Здесь «ремонт» — существительное, то есть дополнение, и сказуемое простое.'},
+
+{sec:1,type:'multi',skill:'Инфинитив в составе сказуемого',title:'Отметь ВСЕ предложения, в которых инфинитив входит в состав сказуемого.',
+ opts:['Мы хотели сегодня остаться дома.','Директор попросил нас остаться после уроков.','Гости пришли поздравить именинника.','Мне необходимо выспаться перед экзаменом.','Мечта стать врачом появилась у неё в детстве.','Она всегда рада помочь друзьям.'],ans:[0,3,5],
+ why:'«Хотели остаться», «необходимо выспаться», «рада помочь» — вспомогательная часть (модальный глагол, слово «необходимо», краткое прилагательное) + инфинитив. В остальных случаях инфинитив — второстепенный член предложения.'},
+
+{sec:1,type:'match',skill:'Когда инфинитив не в сказуемом',title:'Почему инфинитив здесь не входит в состав сказуемого? Выбери причину. (Один вариант лишний.)',
+ opts:['Действия выполняют разные лица','Инфинитив относится к глаголу движения','К инфинитиву можно задать вопрос «какой?»','Инфинитив стоит в конце предложения'],
+ rows:[
+  {s:'Тренер велел им <span class="t">бежать</span> быстрее.',a:0},
+  {s:'Бабушка вышла <span class="t">встретить</span> внука.',a:1},
+  {s:'Привычка <span class="t">вставать</span> рано сохранилась у него до сих пор.',a:2}],
+ why:'Три проверки: действия выполняют разные лица? глагол движения? можно ли задать вопрос «какой?» (привычка какая? — вставать рано). Место инфинитива в предложении ничего не доказывает.'},
+
+{sec:1,type:'input',skill:'Грамматическая основа',title:'Запиши грамматическую основу: подлежащее и сказуемое.',
+ q:'Ученики всю неделю ломали голову над задачей.',
+ fields:[{label:'Подлежащее:',acc:['ученики']},{label:'Сказуемое:',acc:['ломали голову']}],
+ why:'Подлежащее — «ученики». «Ломали голову» — фразеологизм, одно простое глагольное сказуемое. Если взять только «ломали», смысл потеряется («голову» здесь не дополнение).'},
+
+{sec:1,type:'choice',skill:'Преобразование сказуемого',title:'Исходное предложение: «Сестра рисует портрет». Выбери вариант, где сказуемое стало составным глагольным.',
+ opts:['Сестра нарисовала бы портрет.','Сестра захотела нарисовать портрет.','Сестра будет рисовать портрет.','Сестра пусть нарисует портрет.'],ans:1,
+ why:'Составное сказуемое: вспомогательная часть «захотела» + инфинитив «нарисовать». «Нарисовала бы» — условное наклонение, «будет рисовать» — сложная форма будущего, «пусть нарисует» — глагол с частицей: все эти сказуемые простые.'},
+
+/* ---------- СВОИМИ СЛОВАМИ ---------- */
+{sec:2,type:'text',skill:'Рефлексия',title:'Придумай своё предложение, где инфинитив стоит рядом с глаголом, но НЕ входит в сказуемое. Объясни, по какому признаку ты это определила.'}
+];
+
+/* ---------- РЕНДЕР ---------- */
+function rowHtml(t,i,n){
+ let inner='';
+ if(t.q&&t.type!=='tap')inner+=`<div class="stmt">${t.q}</div>`;
+ if(t.type==='choice'||t.type==='multi'){
+  const ty=t.type==='choice'?'radio':'checkbox';
+  inner+=t.opts.map((o,k)=>`<label class="opt"><input type="${ty}" name="t${i}" value="${k}"><span class="box"></span><span>${o}</span></label>`).join('');
+ }else if(t.type==='match'){
+  const op=t.opts.map((o,k)=>`<option value="${k}">${o}</option>`).join('');
+  inner+=t.rows.map((r,j)=>`<div class="mrow"><div class="ms">${r.s}</div><select><option value="">выбери…</option>${op}</select></div>`).join('');
+ }else if(t.type==='tap'){
+  inner+='<div class="tokens">'+t.tokens.map((w,k)=>`<button type="button" class="tok">${w}</button>`).join('')+'</div>';
+ }else if(t.type==='input'){
+  inner+=t.fields.map(f=>`<label class="fld">${f.label}<input type="text" autocomplete="off"></label>`).join('');
+ }else if(t.type==='text'){
+  inner+='<textarea placeholder="Напиши здесь…"></textarea>';
+ }
+ return `<div class="row" id="r${i}"><div class="num"><span>${n}</span></div><div class="body"><div class="skill">${t.skill}</div><div class="q">${t.title}</div>${inner}<div class="fb" hidden></div></div></div>`;
+}
+let checked=false;
+function buildTasks(){
+ let html='',n=0,last=-1;
+ TASKS.forEach((t,i)=>{
+  if(t.sec!==last){last=t.sec;html+=`<div class="band ${SECTIONS[t.sec].c}">${SECTIONS[t.sec].n}</div>`;}
+  n++;html+=rowHtml(t,i,n);
+ });
+ $('#tasks').innerHTML=html;
+}
+const FACES=[
+ ['<path d="M-8 2Q0 14 8 2Z" fill="#4a3b34"/>','отлично'],
+ ['<path d="M-7 4Q0 11 7 4" fill="none"/>','хорошо'],
+ ['<path d="M-6 6H6" fill="none"/>','нормально'],
+ ['<path d="M-7 9Q0 3 7 9" fill="none"/>','так себе'],
+ ['<path d="M-7 10Q0 2 7 10" fill="none"/><path d="M-9-8L-4-6M9-8L4-6" fill="none"/>','трудно']
+];
+$('#faces').innerHTML=FACES.map((f,k)=>`<label><svg viewBox="-20 -20 40 40" width="46" height="46"><circle r="17" fill="#fffdfa" stroke="#4a3b34" stroke-width="1.6"/><g fill="#4a3b34"><circle cx="-6" cy="-4" r="1.8"/><circle cx="6" cy="-4" r="1.8"/></g><g stroke="#4a3b34" stroke-width="1.8" stroke-linecap="round">${f[0]}</g></svg><input type="radio" name="mood" value="${f[1]}"><span>${f[1]}</span></label>`).join('');
+
+/* ---------- ОЦЕНКА ---------- */
+function evalT(t,i){
+ const row=document.getElementById('r'+i);
+ if(t.type==='choice'){
+  const c=row.querySelector('input:checked'),k=c?+c.value:-1;
+  return{done:k>=0,score:k===t.ans?1:0,max:1,answer:k>=0?strip(t.opts[k]):'—',correct:strip(t.opts[t.ans])};
+ }
+ if(t.type==='multi'){
+  const ks=[...row.querySelectorAll('input')].map((x,k)=>x.checked?k:-1).filter(k=>k>=0);
+  const right=ks.filter(k=>t.ans.includes(k)).length,wrong=ks.length-right;
+  return{done:ks.length>0,score:Math.max(0,right-wrong),max:t.ans.length,
+   answer:ks.length?ks.map(k=>strip(t.opts[k])).join('; '):'—',correct:t.ans.map(k=>strip(t.opts[k])).join('; ')};
+ }
+ if(t.type==='match'){
+  const sels=[...row.querySelectorAll('select')];let sc=0,parts=[],all=true;
+  sels.forEach((s,j)=>{const v=s.value===''?-1:+s.value;if(v<0)all=false;if(v===t.rows[j].a)sc++;parts.push(strip(t.rows[j].s)+' → '+(v>=0?t.opts[v]:'—'));});
+  return{done:all,score:sc,max:t.rows.length,answer:parts.join('\n'),correct:t.rows.map(r=>strip(r.s)+' → '+t.opts[r.a]).join('\n')};
+ }
+ if(t.type==='tap'){
+  const sel=[...row.querySelectorAll('.tok')].map((b,k)=>b.classList.contains('on')?k:-1).filter(k=>k>=0);
+  const ok=sel.length===t.ans.length&&t.ans.every(k=>sel.includes(k));
+  return{done:sel.length>0,score:ok?1:0,max:1,answer:sel.length?sel.map(k=>t.tokens[k]).join(' '):'—',correct:t.ans.map(k=>t.tokens[k]).join(' ')};
+ }
+ if(t.type==='input'){
+  const ins=[...row.querySelectorAll('input')];let sc=0,parts=[],all=true;
+  ins.forEach((x,j)=>{if(!x.value.trim())all=false;if(t.fields[j].acc.map(norm).includes(norm(x.value)))sc++;parts.push(t.fields[j].label+' '+(x.value.trim()||'—'));});
+  return{done:all,score:sc,max:t.fields.length,answer:parts.join('\n'),correct:t.fields.map(f=>f.label+' '+f.acc[0]).join('\n')};
+ }
+ const v=row.querySelector('textarea').value.trim();
+ return{done:!!v,score:0,max:0,answer:v||'—',correct:''};
+}
+
+function mark(t,i,r){
+ const row=document.getElementById('r'+i);
+ row.querySelectorAll('.good,.bad,.miss').forEach(e=>e.classList.remove('good','bad','miss'));
+ if(t.type==='choice'||t.type==='multi'){
+  const ans=t.type==='choice'?[t.ans]:t.ans;
+  row.querySelectorAll('.opt').forEach((lab,k)=>{
+   const on=lab.querySelector('input').checked;
+   if(on)lab.classList.add(ans.includes(k)?'good':'bad');else if(ans.includes(k))lab.classList.add('miss');
+  });
+ }else if(t.type==='match'){
+  row.querySelectorAll('select').forEach((s,j)=>s.classList.add(s.value!==''&&+s.value===t.rows[j].a?'good':'bad'));
+ }else if(t.type==='tap'){
+  row.querySelectorAll('.tok').forEach((b,k)=>{
+   const on=b.classList.contains('on'),right=t.ans.includes(k);
+   if(on)b.classList.add(right?'good':'bad');else if(right)b.classList.add('miss');
+  });
+ }else if(t.type==='input'){
+  row.querySelectorAll('input').forEach((x,j)=>x.classList.add(t.fields[j].acc.map(norm).includes(norm(x.value))?'good':'bad'));
+ }
+ if(t.type==='text')return;
+ const fb=row.querySelector('.fb');fb.hidden=false;
+ const full=r.score===r.max;
+ fb.className='fb '+(full?'ok':r.score>0?'part':'no');
+ const head=full?'✓ Верно!':(r.score>0?`~ Почти: ${r.score} из ${r.max}`:(r.done?'✗ Пока не получилось':'✗ Нет ответа'));
+ fb.innerHTML=`<b>${head}</b>`+(full?'':`<div class="cor">Правильный ответ:<br>${r.correct.replace(/\n/g,'<br>')}</div>`)+`<div class="why">${t.why}</div>`;
+}
+
+function upd(){
+ let done=0,tot=0;const sd=[true,true,true];
+ TASKS.forEach((t,i)=>{const r=evalT(t,i);if(t.type!=='text'){tot++;if(r.done)done++;}if(!r.done)sd[t.sec]=false;});
+ $('#p1').checked=sd[0];$('#p2').checked=sd[1];$('#p3').checked=sd[2];$('#p4').checked=checked;
+ $('#cnt').textContent=`Отвечено: ${done} из ${tot}`;
+ $('#fill').style.width=(tot?done/tot*100:0)+'%';
+}
+
+function check(){
+ let sc=0,mx=0;const bad=[];const sec=[[0,0],[0,0],[0,0]];
+ TASKS.forEach((t,i)=>{
+  const r=evalT(t,i);mark(t,i,r);
+  if(t.type==='text')return;
+  sc+=r.score;mx+=r.max;sec[t.sec][0]+=r.score;sec[t.sec][1]+=r.max;
+  if(r.score<r.max&&!bad.includes(t.skill))bad.push(t.skill);
+ });
+ checked=true;upd();
+ const p=Math.round(sc/mx*100);
+ const msg=p>=90?'Отлично! Ты не только знаешь правила, но и понимаешь логику разбора.':p>=70?'Хорошо! Основа есть, осталось подтянуть несколько тем.':p>=50?'Неплохо! Посмотри разборы под заданиями — там объяснена логика.':'Не страшно! Разберём тему вместе: начни с подсказок «Не забыть».';
+ const R=$('#result');R.hidden=false;
+ R.innerHTML=`<div class="big">${sc} из ${mx} <span style="font-size:20px;font-weight:700">(${p}%)</span></div>
+ <div style="margin:4px 0 10px;font-weight:600">${msg}</div>
+ <div>Подлежащее: <b>${sec[0][0]} из ${sec[0][1]}</b> &nbsp;·&nbsp; Сказуемое: <b>${sec[1][0]} из ${sec[1][1]}</b></div>
+ ${bad.length?'<div style="margin-top:12px;font-weight:700">Что стоит повторить:</div><div class="chips">'+bad.map(b=>`<span class="chip">${b}</span>`).join('')+'</div>':'<div style="margin-top:12px;font-weight:700">Повторять нечего — всё верно! ♡</div>'}`;
+ R.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* ---------- ОТВЕТЫ ДЛЯ ПРЕПОДАВАТЕЛЯ ---------- */
+function report(){
+ const L=[];
+ L.push('ТЕСТ «Подлежащее и сказуемое», 8 класс');
+ L.push('Имя: '+($('#name').value.trim()||'—'));
+ L.push('Дата: '+($('#date').value||'—'));
+ L.push('Цель: '+($('#goal').value.trim()||'—'));
+ let sc=0,mx=0;const rs=TASKS.map((t,i)=>evalT(t,i));
+ rs.forEach((r,i)=>{if(TASKS[i].type!=='text'){sc+=r.score;mx+=r.max;}});
+ L.push(`Результат: ${sc} из ${mx} (${Math.round(sc/mx*100)}%)`);
+ TASKS.forEach((t,i)=>{
+  const r=rs[i];
+  L.push('');
+  L.push(`${i+1}. [${t.skill}] ${strip(t.title)}`);
+  if(t.q)L.push('Предложение: '+strip(t.q));
+  L.push('Ответ: '+(r.answer.includes('\n')?'\n   '+r.answer.replace(/\n/g,'\n   '):r.answer));
+  if(t.type!=='text'){
+   L.push('Оценка: '+(r.score===r.max?'верно ✓':`${r.score} из ${r.max}`));
+   if(r.score<r.max&&r.done)L.push('Верный ответ: '+(r.correct.includes('\n')?'\n   '+r.correct.replace(/\n/g,'\n   '):r.correct));
+  }
+ });
+ const m=document.querySelector('input[name=mood]:checked');
+ L.push('');
+ L.push('Настроение: '+(m?m.value:'—'));
+ L.push('Горжусь собой за: '+($('#proud').value.trim()||'—'));
+ const nt=$('#notes').value.trim();if(nt)L.push('Заметки: '+nt);
+ return L.join('\n');
+}
+function toast(s){const t=$('#toast');t.textContent=s;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2200);}
+async function copyReport(){
+ const txt=report();
+ try{await navigator.clipboard.writeText(txt);}
+ catch(e){const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(_){}ta.remove();}
+ toast('Ответы скопированы ♡');
+}
+function reset(){
+ buildTasks();
+ ['#name','#goal','#notes','#proud'].forEach(s=>$(s).value='');
+ document.querySelectorAll('input[name=mood],#p5,.nb input').forEach(e=>e.checked=false);
+ $('#date').valueAsDate=new Date();
+ $('#result').hidden=true;checked=false;upd();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- СОБЫТИЯ ---------- */
+document.addEventListener('click',e=>{
+ const b=e.target.closest('.tok');if(b){b.classList.toggle('on');upd();}
+});
+document.addEventListener('input',upd);
+document.addEventListener('change',upd);
+$('#bCheck').onclick=check;
+$('#bCopy').onclick=copyReport;
+let rr=0;
+$('#bReset').onclick=function(){
+ if(!rr){rr=1;this.textContent='Точно? Нажми ещё раз';setTimeout(()=>{rr=0;this.textContent='Начать заново';},3000);}
+ else{rr=0;this.textContent='Начать заново';reset();}
+};
+buildTasks();
+$('#date').valueAsDate=new Date();
+upd();
+</script>
+</body>
+</html>
